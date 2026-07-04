@@ -26,4 +26,18 @@ public class LogTailerTests
         var tailer = new LogTailer(Path.Combine(Path.GetTempPath(), "nope.log"));
         Assert.Empty(tailer.ReadNew());
     }
+
+    [Fact]
+    public void ReadNew_DoesNotEmitPartialLine_UntilNewlineArrives()
+    {
+        var path = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".log");
+        File.WriteAllText(path, "complete\npar");
+        var tailer = new LogTailer(path);
+
+        Assert.Equal(new[] { "complete" }, tailer.ReadNew().ToList()); // "par" withheld
+
+        File.AppendAllText(path, "tial\n");
+        Assert.Equal(new[] { "partial" }, tailer.ReadNew().ToList()); // now complete
+        File.Delete(path);
+    }
 }

@@ -45,9 +45,15 @@ public sealed class ConfigStore : IConfigStore
         }
 
         var tmp = path + ".tmp";
-        File.WriteAllText(tmp, node.ToJsonString(WriteOpts));
-        File.Copy(tmp, path, overwrite: true);   // write-then-swap: never lose the original on crash
-        File.Delete(tmp);
+        try
+        {
+            File.WriteAllText(tmp, node.ToJsonString(WriteOpts));
+            File.Move(tmp, path, overwrite: true);   // atomic replace on same volume; never leaves a half-written target
+        }
+        finally
+        {
+            if (File.Exists(tmp)) File.Delete(tmp);  // clean up on any failure before the move consumed it
+        }
     }
 
     public ValidationResult Validate(AppConfig config)

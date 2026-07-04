@@ -44,4 +44,14 @@ public class ConfigStoreWriteTests
         Assert.Equal("keepme", doc.RootElement.GetProperty("futureFlag").GetString());
         File.Delete(path);
     }
+
+    [Fact]
+    public void Write_LeavesNoTempFile()
+    {
+        var path = TempPath();
+        var store = new ConfigStore();
+        store.Write(path, new AppConfig());
+        Assert.False(File.Exists(path + ".tmp"));
+        File.Delete(path);
+    }
 }

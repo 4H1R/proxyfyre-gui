@@ -28,9 +28,8 @@ public sealed class ServiceController : IServiceController
 
     public void Restart()
     {
-        if (CurrentState == ServiceState.Running) _host.Stop();
-        _host.Start();
-        Refresh();
+        Stop();
+        Start();   // Start() already installs when NotInstalled
     }
 
     public void Uninstall()
