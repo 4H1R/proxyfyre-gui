@@ -26,11 +26,23 @@
                              IsSettingsVisible="False"
                              SelectionChanged="Nav_SelectionChanged">
             <muxc:NavigationView.MenuItems>
-                <muxc:NavigationViewItem Content="Dashboard"   Tag="dashboard" Icon="Home"     IsSelected="True"/>
-                <muxc:NavigationViewItem Content="Proxy Rules" Tag="rules"     Icon="Filter"/>
-                <muxc:NavigationViewItem Content="Excludes"    Tag="excludes"  Icon="Remove"/>
-                <muxc:NavigationViewItem Content="Logs"        Tag="logs"      Icon="Document"/>
-                <muxc:NavigationViewItem Content="Settings"    Tag="settings"  Icon="Setting"/>
+                <!-- Explicit SymbolIcon element form: the Icon="Name" string shorthand
+                     fails to parse/render on WinUI 3 (microsoft-ui-xaml#6392). -->
+                <muxc:NavigationViewItem Content="Dashboard" Tag="dashboard" IsSelected="True">
+                    <muxc:NavigationViewItem.Icon><SymbolIcon Symbol="Home"/></muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Proxy Rules" Tag="rules">
+                    <muxc:NavigationViewItem.Icon><SymbolIcon Symbol="Filter"/></muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Excludes" Tag="excludes">
+                    <muxc:NavigationViewItem.Icon><SymbolIcon Symbol="Remove"/></muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Logs" Tag="logs">
+                    <muxc:NavigationViewItem.Icon><SymbolIcon Symbol="Document"/></muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Settings" Tag="settings">
+                    <muxc:NavigationViewItem.Icon><SymbolIcon Symbol="Setting"/></muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
             <Frame x:Name="ContentFrame"/>
         </muxc:NavigationView>

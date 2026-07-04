@@ -13,6 +13,8 @@ Compression=lzma2
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
 PrivilegesRequired=admin
+SetupIconFile=app.ico
+UninstallDisplayIcon={app}\ProxiFyre.UI.exe
 
 [Files]
 ; Published WinUI app (self-contained) + bundled ProxiFyre.exe live in publish/
