@@ -30,12 +30,17 @@ jobs:
           -p:SelfContained=true -p:WindowsAppSDKSelfContained=true
           -p:PublishDir=publish\
 
-      # Bundle ProxiFyre.exe. Pin a known-good ProxiFyre release; update the URL as needed.
+      # Bundle ProxiFyre.exe: resolve the latest x64 asset dynamically (asset name is
+      # version-stamped, e.g. ProxiFyre-v2.2.1-x64-signed.zip).
       - name: Download ProxiFyre binary
         shell: pwsh
         run: |
-          $url = "https://github.com/wiresock/proxifyre/releases/latest/download/ProxiFyre.zip"
-          Invoke-WebRequest -Uri $url -OutFile proxifyre.zip
+          $rel = Invoke-RestMethod "https://api.github.com/repos/wiresock/proxifyre/releases/latest" `
+            -Headers @{ 'User-Agent' = 'proxyfyre-gui-ci' }
+          $asset = $rel.assets | Where-Object { $_.name -like '*x64*signed.zip' } | Select-Object -First 1
+          if (-not $asset) { throw "No x64 ProxiFyre asset found" }
+          Write-Host "Downloading $($asset.name)"
+          Invoke-WebRequest $asset.browser_download_url -OutFile proxifyre.zip
           Expand-Archive proxifyre.zip -DestinationPath publish -Force
 
       - name: Install Inno Setup
