@@ -10,7 +10,7 @@
                 <TextBlock Text="Prerequisites" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <TextBlock Text="All prerequisites installed. Ready to start."
                            Foreground="LimeGreen"
-                           Visibility="{x:Bind Vm.PrereqReady, Mode=OneWay}"/>
+                           Visibility="{x:Bind Vm.PrereqReady, Mode=OneWay, Converter={StaticResource BoolToVisibility}}"/>
                 <ItemsControl ItemsSource="{x:Bind Vm.MissingPrereqs, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="x:String">
