@@ -25,12 +25,15 @@ jobs:
       - name: Restore WinUI app
         run: dotnet restore src/ProxiFyre.UI/ProxiFyre.UI.csproj -r win-x64
 
+      # PublishDir is interpreted relative to the PROJECT dir, so a bare `publish\`
+      # lands in src/ProxiFyre.UI/publish. Use an absolute repo-root path so the
+      # app, the ProxiFyre.exe download, and the installer all agree on `publish\`.
       - name: Publish WinUI app (self-contained x64)
         run: >
           msbuild src/ProxiFyre.UI/ProxiFyre.UI.csproj -t:Publish
           -p:Configuration=Release -p:Platform=x64 -p:RuntimeIdentifier=win-x64
           -p:SelfContained=true -p:WindowsAppSDKSelfContained=true
-          -p:PublishDir=publish\
+          -p:PublishDir=${{ github.workspace }}\publish\
 
       # Bundle ProxiFyre.exe: resolve the latest x64 asset dynamically (asset name is
       # version-stamped, e.g. ProxiFyre-v2.2.1-x64-signed.zip).
