@@ -34,6 +34,9 @@ configure, and control ProxiFyre without hand-editing JSON or using the command 
 | Run mode | Windows service | Proxying persists after UI closes; boot autostart; ProxiFyre supports it natively. |
 | Main window layout | Sidebar + top status bar + bottom log strip (Layout "A") | Closest to Proxifier. |
 | Theme | Fluent, dark default | Modern look. |
+| CI/CD | GitHub Actions (windows-latest): PR/main build+unit-test; `v*` tag → packaged Release | OSS; gate PRs, clean versioned releases. |
+| Packaging | Unpackaged app + Inno Setup `.exe` installer | Bundles ProxiFyre.exe + prereq guided setup; fits "bundle + guided setup". |
+| Build environment | CI compiles & unit-tests on windows-latest; local dev optional on Windows | This dev box is WSL2 Linux; WinUI 3 can't build on Linux. |
 
 ## Architecture
 
@@ -156,6 +159,25 @@ Reference `app-config.json` (from ProxiFyre docs):
 1. Windows Packet Filter (WinpkFilter) driver.
 2. Visual Studio 2022 runtime libraries (matching architecture).
 3. Windows Firewall rules allowing ProxiFyre.exe (surfaced as guidance).
+
+## CI/CD & Packaging
+
+- **Repository:** open source on GitHub.
+- **CI (GitHub Actions, `windows-latest`):** on every PR and push to `main` — restore, build, run
+  unit tests. NuGet cache for speed. PRs gated on green build.
+- **Release:** pushing a `v*` semver tag builds the app, runs the Inno Setup script to produce the
+  installer `.exe`, and publishes it to a GitHub Release.
+- **Solution split** (so as much as possible is CI-testable and future core reuse is possible):
+  - `ProxiFyre.Core` — plain .NET class library (`net8.0`). ConfigStore, PrereqChecker logic,
+    LogTailer, ServiceController abstraction, LocatorService, models. Fully unit-tested in CI.
+    Builds cross-platform (also on Linux if a .NET SDK is installed) except for pieces that call
+    Windows APIs, which sit behind interfaces.
+  - `ProxiFyre.UI` — WinUI 3 app (`net8.0-windows10.0.19041.0`). Views + viewmodels. Windows-only.
+  - `ProxiFyre.Core.Tests` — xUnit tests for Core.
+- **Installer (Inno Setup):** bundles `ProxiFyre.exe` + the UI, creates Start Menu / desktop
+  shortcuts, and launches the prereq guided setup on first run.
+- **Driver/service integration testing:** cannot run in CI (kernel driver). Covered by a manual
+  smoke checklist on a real Windows host.
 
 ## Testing
 
