@@ -28,6 +28,8 @@ service, and read logs — no JSON editing, no terminal.
 ## Requirements
 
 - Windows 10 (1809+) or Windows 11, x64
+- [.NET 8 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/8.0/runtime) — the
+  current installer is framework-dependent (the Windows App SDK runtime *is* bundled)
 - [Windows Packet Filter (WinpkFilter)](https://github.com/wiresock/ndisapi/releases) driver
 - Visual C++ 2022 runtime (x64)
 
