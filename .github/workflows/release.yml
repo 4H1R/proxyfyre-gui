@@ -35,6 +35,22 @@ jobs:
           -p:SelfContained=true -p:WindowsAppSDKSelfContained=true
           -p:PublishDir=${{ github.workspace }}\publish\
 
+      # msbuild -t:Publish generates the app resource index (ProxiFyre.UI.pri) in bin\
+      # but does NOT copy it to the publish dir — only the framework PRIs get copied.
+      # Without the app's resources.pri next to the exe, MRT can't resolve WinUI theme
+      # resources at runtime, so the first {ThemeResource} use throws XamlParseException
+      # and the main window never opens. Copy it in as resources.pri (the name the
+      # unpackaged WinUI runtime auto-loads from the app directory).
+      - name: Include app resources.pri
+        shell: pwsh
+        run: |
+          $pri = Get-ChildItem -Path src/ProxiFyre.UI/bin -Recurse -Filter ProxiFyre.UI.pri |
+            Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $pri) { throw "app PRI (ProxiFyre.UI.pri) not found under bin" }
+          $dest = Join-Path "${{ github.workspace }}\publish" "resources.pri"
+          Copy-Item $pri.FullName $dest -Force
+          Write-Host "Copied $($pri.FullName) -> $dest"
+
       # Bundle ProxiFyre.exe: resolve the latest x64 asset dynamically (asset name is
       # version-stamped, e.g. ProxiFyre-v2.2.1-x64-signed.zip).
       - name: Download ProxiFyre binary
