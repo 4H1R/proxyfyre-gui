@@ -1,0 +1,43 @@
+<Page
+    x:Class="ProxiFyre.UI.Views.RulesPage"
+    x:Name="RootPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:ProxiFyre.Core.ViewModels">
+    <Grid Padding="24" RowDefinitions="Auto,*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="12">
+            <TextBlock Text="Proxy Rules" Style="{ThemeResource TitleTextBlockStyle}"/>
+            <Button Content="Add rule" Command="{x:Bind Vm.AddRuleCommand}"/>
+            <Button Content="Save" Style="{ThemeResource AccentButtonStyle}"
+                    Command="{x:Bind Vm.SaveCommand}"/>
+        </StackPanel>
+
+        <ListView Grid.Row="1" Margin="0,12" ItemsSource="{x:Bind Vm.Rules}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:RuleItemViewModel">
+                    <Border Padding="12" Margin="0,4" CornerRadius="6"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                        <StackPanel Spacing="6">
+                            <TextBox Header="Apps (comma-separated)"
+                                     Text="{x:Bind AppNamesText, Mode=TwoWay}"/>
+                            <TextBox Header="SOCKS5 endpoint (host:port)"
+                                     Text="{x:Bind Endpoint, Mode=TwoWay}"/>
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <TextBox Header="Username" Text="{x:Bind Username, Mode=TwoWay}" Width="160"/>
+                                <PasswordBox Header="Password" Password="{x:Bind Password, Mode=TwoWay}" Width="160"/>
+                                <CheckBox Content="TCP" IsChecked="{x:Bind Tcp, Mode=TwoWay}" VerticalAlignment="Bottom"/>
+                                <CheckBox Content="UDP" IsChecked="{x:Bind Udp, Mode=TwoWay}" VerticalAlignment="Bottom"/>
+                                <Button Content="Delete" VerticalAlignment="Bottom"
+                                        Command="{Binding DataContext.DeleteRuleCommand, ElementName=RootPage}"
+                                        CommandParameter="{Binding}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <TextBlock Grid.Row="2" Foreground="OrangeRed" TextWrapping="Wrap"
+                   Text="{x:Bind Vm.ErrorText, Mode=OneWay}"/>
+    </Grid>
+</Page>

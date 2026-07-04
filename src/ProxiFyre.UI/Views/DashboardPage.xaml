@@ -1,0 +1,39 @@
+<Page
+    x:Class="ProxiFyre.UI.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="24" Spacing="16">
+        <TextBlock Text="Dashboard" Style="{ThemeResource TitleTextBlockStyle}"/>
+        <Border Padding="16" CornerRadius="8"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <StackPanel Spacing="8">
+                <TextBlock Text="Prerequisites" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="All prerequisites installed. Ready to start."
+                           Foreground="LimeGreen"
+                           Visibility="{x:Bind Vm.PrereqReady, Mode=OneWay}"/>
+                <ItemsControl ItemsSource="{x:Bind Vm.MissingPrereqs, Mode=OneWay}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock Text="{x:Bind}" Foreground="OrangeRed"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <HyperlinkButton Content="Get WinpkFilter driver"
+                        NavigateUri="https://github.com/wiresock/ndisapi/releases"/>
+                    <HyperlinkButton Content="Get VC++ 2022 runtime"
+                        NavigateUri="https://aka.ms/vs/17/release/vc_redist.x64.exe"/>
+                    <Button Content="Recheck" Command="{x:Bind Vm.RecheckCommand}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border Padding="16" CornerRadius="8"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Active proxy rules" Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                <TextBlock Text="{x:Bind Vm.RuleCount, Mode=OneWay}"
+                           Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</Page>

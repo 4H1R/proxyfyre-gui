@@ -1,0 +1,18 @@
+<Page
+    x:Class="ProxiFyre.UI.Views.ExcludesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="24" Spacing="12">
+        <TextBlock Text="Excludes" Style="{ThemeResource TitleTextBlockStyle}"/>
+        <ToggleSwitch Header="Bypass LAN (10/8, 172.16/12, 192.168/16)"
+                      IsOn="{x:Bind Vm.BypassLan, Mode=TwoWay}"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <TextBox PlaceholderText="app name to exclude" Width="240"
+                     Text="{x:Bind Vm.NewExclude, Mode=TwoWay}"/>
+            <Button Content="Add" Command="{x:Bind Vm.AddCommand}"/>
+            <Button Content="Save" Style="{ThemeResource AccentButtonStyle}"
+                    Command="{x:Bind Vm.SaveCommand}"/>
+        </StackPanel>
+        <ListView ItemsSource="{x:Bind Vm.Excludes}"/>
+    </StackPanel>
+</Page>

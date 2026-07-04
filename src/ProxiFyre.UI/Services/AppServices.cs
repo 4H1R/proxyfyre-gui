@@ -28,8 +28,9 @@ public static class AppServices
         return services.BuildServiceProvider();
     }
 
-    // Extended in later tasks (partial-like; edit this method as viewmodels are added).
     private static void RegisterViewModels(IServiceCollection services)
     {
+        services.AddTransient<ProxiFyre.Core.ViewModels.ShellViewModel>();
+        services.AddTransient<ProxiFyre.Core.ViewModels.DashboardViewModel>();
     }
 }

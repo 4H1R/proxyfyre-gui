@@ -1,0 +1,14 @@
+<Page
+    x:Class="ProxiFyre.UI.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel Padding="24" Spacing="16">
+        <TextBlock Text="Settings" Style="{ThemeResource TitleTextBlockStyle}"/>
+        <ComboBox Header="Log level" ItemsSource="{x:Bind Vm.LogLevels}"
+                  SelectedItem="{x:Bind Vm.LogLevel, Mode=TwoWay}"/>
+        <ToggleSwitch x:Name="AutostartSwitch" Header="Start ProxiFyre on boot"
+                      Toggled="Autostart_Toggled"/>
+        <Button Content="Save" Style="{ThemeResource AccentButtonStyle}"
+                Command="{x:Bind Vm.SaveCommand}"/>
+    </StackPanel>
+</Page>
