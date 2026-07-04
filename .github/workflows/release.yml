@@ -12,18 +12,23 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+      # WinUI publish needs the MSIX/PRI packaging tasks from Visual Studio's MSBuild.
+      - uses: microsoft/setup-msbuild@v2
 
       - name: Derive version
         id: ver
         shell: pwsh
         run: echo "version=$($env:GITHUB_REF_NAME.TrimStart('v'))" >> $env:GITHUB_OUTPUT
 
+      - name: Restore WinUI app
+        run: msbuild src/ProxiFyre.UI/ProxiFyre.UI.csproj -t:Restore -p:Configuration=Release -p:Platform=x64
+
       - name: Publish WinUI app (self-contained x64)
         run: >
-          dotnet publish src/ProxiFyre.UI/ProxiFyre.UI.csproj
-          -c Release -r win-x64 --self-contained true
-          -p:Platform=x64 -p:WindowsAppSDKSelfContained=true
-          -o publish
+          msbuild src/ProxiFyre.UI/ProxiFyre.UI.csproj -t:Publish
+          -p:Configuration=Release -p:Platform=x64 -p:RuntimeIdentifier=win-x64
+          -p:SelfContained=true -p:WindowsAppSDKSelfContained=true
+          -p:PublishDir=publish\
 
       # Bundle ProxiFyre.exe. Pin a known-good ProxiFyre release; update the URL as needed.
       - name: Download ProxiFyre binary
