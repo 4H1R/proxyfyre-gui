@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{41C8AC12-34FC-4FB7-917F-55A658F62659}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxiFyre.Core", "src\ProxiFyre.Core\ProxiFyre.Core.csproj", "{47E032AB-8908-4D11-A9C2-7675123C3069}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0CC43C68-899B-4F2B-9D12-2B4E01B86024}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxiFyre.Core.Tests", "tests\ProxiFyre.Core.Tests\ProxiFyre.Core.Tests.csproj", "{EA8DBF27-485C-4C57-A477-133EEF8139A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47E032AB-8908-4D11-A9C2-7675123C3069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47E032AB-8908-4D11-A9C2-7675123C3069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47E032AB-8908-4D11-A9C2-7675123C3069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47E032AB-8908-4D11-A9C2-7675123C3069}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA8DBF27-485C-4C57-A477-133EEF8139A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA8DBF27-485C-4C57-A477-133EEF8139A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA8DBF27-485C-4C57-A477-133EEF8139A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA8DBF27-485C-4C57-A477-133EEF8139A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{47E032AB-8908-4D11-A9C2-7675123C3069} = {41C8AC12-34FC-4FB7-917F-55A658F62659}
+		{EA8DBF27-485C-4C57-A477-133EEF8139A1} = {0CC43C68-899B-4F2B-9D12-2B4E01B86024}
+	EndGlobalSection
+EndGlobal
