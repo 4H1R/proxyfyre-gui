@@ -22,7 +22,7 @@ jobs:
         run: >
           dotnet publish src/ProxiFyre.UI/ProxiFyre.UI.csproj
           -c Release -r win-x64 --self-contained true
-          -p:WindowsAppSDKSelfContained=true
+          -p:Platform=x64 -p:WindowsAppSDKSelfContained=true
           -o publish
 
       # Bundle ProxiFyre.exe. Pin a known-good ProxiFyre release; update the URL as needed.
