@@ -1,0 +1,50 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Derive version
+        id: ver
+        shell: pwsh
+        run: echo "version=$($env:GITHUB_REF_NAME.TrimStart('v'))" >> $env:GITHUB_OUTPUT
+
+      - name: Publish WinUI app (self-contained x64)
+        run: >
+          dotnet publish src/ProxiFyre.UI/ProxiFyre.UI.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:WindowsAppSDKSelfContained=true
+          -o publish
+
+      # Bundle ProxiFyre.exe. Pin a known-good ProxiFyre release; update the URL as needed.
+      - name: Download ProxiFyre binary
+        shell: pwsh
+        run: |
+          $url = "https://github.com/wiresock/proxifyre/releases/latest/download/ProxiFyre.zip"
+          Invoke-WebRequest -Uri $url -OutFile proxifyre.zip
+          Expand-Archive proxifyre.zip -DestinationPath publish -Force
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Build installer
+        shell: pwsh
+        env:
+          APP_VERSION: ${{ steps.ver.outputs.version }}
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer\proxifyre-ui.iss
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.exe
+          generate_release_notes: true
