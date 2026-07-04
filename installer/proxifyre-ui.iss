@@ -23,5 +23,8 @@ Name: "{group}\ProxiFyre UI"; Filename: "{app}\ProxiFyre.UI.exe"
 Name: "{autodesktop}\ProxiFyre UI"; Filename: "{app}\ProxiFyre.UI.exe"
 
 [Run]
+; App manifest requests requireAdministrator (needed for Windows service control).
+; shellexec => ShellExecuteEx, which honors the manifest and elevates via UAC.
+; Plain CreateProcess (the default) fails with "code 740: requires elevation".
 Filename: "{app}\ProxiFyre.UI.exe"; Description: "Launch ProxiFyre UI"; \
-  Flags: nowait postinstall skipifsilent
+  Flags: nowait postinstall skipifsilent shellexec
