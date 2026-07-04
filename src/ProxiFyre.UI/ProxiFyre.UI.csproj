@@ -10,6 +10,9 @@
     <UseWinUI>true</UseWinUI>
     <WindowsPackageType>None</WindowsPackageType>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <!-- WinAppSDK 1.5 emits legacy win10-* RIDs; .NET 8 SDK uses the portable RID graph by
+         default and rejects them (NETSDK1083). Opt back into the full RID graph. -->
+    <UseRidGraph>true</UseRidGraph>
     <Nullable>enable</Nullable>
     <EnableDefaultCssItems>false</EnableDefaultCssItems>
   </PropertyGroup>
