@@ -21,7 +21,7 @@ jobs:
         run: echo "version=$($env:GITHUB_REF_NAME.TrimStart('v'))" >> $env:GITHUB_OUTPUT
 
       - name: Restore WinUI app
-        run: msbuild src/ProxiFyre.UI/ProxiFyre.UI.csproj -t:Restore -p:Configuration=Release -p:Platform=x64
+        run: msbuild src/ProxiFyre.UI/ProxiFyre.UI.csproj -t:Restore -p:Configuration=Release -p:Platform=x64 -p:RuntimeIdentifier=win-x64
 
       - name: Publish WinUI app (self-contained x64)
         run: >
